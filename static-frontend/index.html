@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab2 Project - Home</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #f8fbff 0%, #ffffff 55%, #f8fbff 100%);
+            color: #1f2937;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%);
+        }
+        
+        .trip-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .trip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            position: relative;
+            background:
+                linear-gradient(180deg, rgba(248, 251, 255, 0.72) 0%, rgba(238, 242, 247, 0.60) 100%),
+                url('static/images/others/1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #475569;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: transparent;
+            z-index: 1;
+        }
+
+        footer > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                background-attachment: scroll;
+            }
+        }
+
+        .hero-section {
+            position: relative;
+            min-height: 100svh;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(4, 10, 18, 0.88) 0%, rgba(7, 24, 31, 0.76) 48%, rgba(8, 45, 49, 0.62) 100%),
+                url("static/images/hero/21.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(20, 184, 166, 0.18), transparent 24%),
+                radial-gradient(circle at 80% 15%, rgba(250, 204, 21, 0.16), transparent 20%),
+                radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 30%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+
+        .header-overlay a,
+        .header-overlay button {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(20, 184, 166, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(20, 184, 166, 0.9); }
+        }
+
+        @keyframes float-up {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes draw-line {
+            0% { stroke-dashoffset: 1000; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .db-node {
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        .db-node.central {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .db-node.regional {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .db-node.website {
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-color: #60a5fa;
+        }
+
+        .db-node i {
+            font-size: 2.5rem;
+            color: white;
+            animation: float-up 3s ease-in-out infinite;
+        }
+
+        .db-label {
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-top: 8px;
+            text-align: center;
+            color: white;
+        }
+
+        .connection-line {
+            stroke: #14b8a6;
+            stroke-width: 2;
+            stroke-dasharray: 10,5;
+            animation: draw-line 2s ease-in-out forwards;
+        }
+
+        .db-status {
+            position: absolute;
+            top: 88px;
+            right: 24px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.8rem 1.1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 20;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+            backdrop-filter: blur(16px);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .db-status span {
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: pulse-dot 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5); }
+            70% { box-shadow: 0 0 0 12px rgba(52, 211, 153, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+        }
+
+        .architectures-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .architecture-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .layer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            width: 100%;
+        }
+
+        .layer-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            left: 0;
+            top: -25px;
+        }
+
+        .regional-layer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .db-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-shell {
+            position: relative;
+            z-index: 2;
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            padding-top: 6.5rem;
+            padding-bottom: 3rem;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1rem;
+            border-radius: 999px;
+            background: rgba(20, 184, 166, 0.14);
+            border: 1px solid rgba(45, 212, 191, 0.24);
+            color: #99f6e4;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            margin-top: 1.25rem;
+            max-width: 12ch;
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: clamp(3rem, 7vw, 5.8rem);
+            line-height: 0.94;
+            letter-spacing: -0.04em;
+            color: #f8fafc;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            text-wrap: balance;
+        }
+
+        .hero-lead {
+            margin-top: 1.5rem;
+            max-width: 38rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(241, 245, 249, 0.9);
+            text-wrap: balance;
+        }
+
+        .hero-actions {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+        }
+
+        .hero-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.95rem 1.35rem;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hero-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-button--primary {
+            background: linear-gradient(135deg, #f8fafc 0%, #d1fae5 100%);
+            color: #0f172a;
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.25);
+        }
+
+        .hero-button--secondary {
+            background: rgba(15, 23, 42, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #f8fafc;
+        }
+
+        .hero-stats {
+            margin-top: 2.25rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.9rem;
+            max-width: 38rem;
+        }
+
+        .hero-stat {
+            padding: 0.95rem 1rem;
+            border-radius: 1.1rem;
+            background: rgba(15, 23, 42, 0.38);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(14px);
+        }
+
+        .hero-stat strong {
+            display: block;
+            font-size: 1.05rem;
+            color: #f8fafc;
+        }
+
+        .hero-stat span {
+            display: block;
+            margin-top: 0.3rem;
+            font-size: 0.8rem;
+            color: rgba(226, 232, 240, 0.8);
+        }
+
+        .hero-panel {
+            background: rgba(8, 15, 27, 0.52);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 25px 80px rgba(2, 6, 23, 0.45);
+            backdrop-filter: blur(20px);
+        }
+
+        .hero-panel__header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .hero-panel__eyebrow {
+            font-size: 0.78rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: #99f6e4;
+            font-weight: 800;
+        }
+
+        .hero-panel__badge {
+            white-space: nowrap;
+            padding: 0.5rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(20, 184, 166, 0.16);
+            border: 1px solid rgba(45, 212, 191, 0.24);
+            color: #ccfbf1;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .network-diagram {
+            margin-top: 1.5rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .network-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .network-node {
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.92) 0%, rgba(13, 148, 136, 0.8) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(15, 118, 110, 0.35);
+            animation: float-node 5s ease-in-out infinite;
+        }
+
+        .network-node i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .network-node--website {
+            width: 4.2rem;
+            height: 4.2rem;
+        }
+
+        .network-node--central {
+            width: 5rem;
+            height: 5rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(29, 78, 216, 0.82) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(29, 78, 216, 0.3);
+        }
+
+        .network-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .network-label span {
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .network-label small {
+            margin-top: 0.15rem;
+            color: rgba(226, 232, 240, 0.72);
+        }
+
+        .network-connector {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: rgba(226, 232, 240, 0.78);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .network-connector::before,
+        .network-connector::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.85), transparent);
+        }
+
+        .network-connector i {
+            color: #99f6e4;
+        }
+
+        .network-regional-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.8rem;
+        }
+
+        .regional-card {
+            padding: 0.95rem 0.85rem;
+            border-radius: 1.1rem;
+            background: rgba(15, 23, 42, 0.42);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            text-align: center;
+        }
+
+        .regional-card i {
+            display: block;
+            margin-bottom: 0.65rem;
+            font-size: 1.25rem;
+            color: #99f6e4;
+        }
+
+        .regional-card strong {
+            display: block;
+            color: #f8fafc;
+            font-size: 0.98rem;
+        }
+
+        .regional-card small {
+            display: block;
+            margin-top: 0.22rem;
+            color: rgba(226, 232, 240, 0.72);
+        }
+
+        .hero-panel__note {
+            margin-top: 1.25rem;
+            color: rgba(226, 232, 240, 0.85);
+            line-height: 1.7;
+        }
+
+        @keyframes float-node {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @media (min-width: 640px) {
+            .hero-stats {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                background-attachment: scroll;
+            }
+
+            .db-status {
+                position: static;
+                margin: 5.5rem auto 0;
+                width: fit-content;
+            }
+
+            .hero-shell {
+                padding-top: 4.75rem;
+            }
+
+            .hero-title {
+                max-width: none;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-button {
+                width: 100%;
+            }
+
+            .hero-panel__header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .network-regional-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Light theme overrides */
+        .hero-section {
+            color: #1f2937;
+            background:
+                linear-gradient(135deg, rgba(248, 250, 252, 0.76) 0%, rgba(241, 245, 249, 0.64) 48%, rgba(224, 242, 254, 0.70) 100%),
+                url("static/images/hero/21.jpg");
+        }
+
+        .hero-section::before {
+            background:
+                radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.08), transparent 24%),
+                radial-gradient(circle at 80% 15%, rgba(45, 212, 191, 0.07), transparent 20%),
+                radial-gradient(circle at 50% 80%, rgba(251, 191, 36, 0.05), transparent 30%);
+        }
+
+        .header-overlay {
+            background: rgba(255, 255, 255, 0.84);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .header-overlay a,
+        .header-overlay button {
+            color: #0f172a;
+            text-shadow: none;
+        }
+
+        .header-overlay a:hover,
+        .header-overlay button:hover {
+            color: #0f766e;
+        }
+
+        .header-overlay .bg-teal-500 {
+            background: linear-gradient(135deg, #d1fae5 0%, #bae6fd 100%);
+            color: #0f172a;
+        }
+
+        .header-overlay .bg-teal-500:hover {
+            background: linear-gradient(135deg, #a7f3d0 0%, #7dd3fc 100%);
+        }
+
+        .header-overlay .bg-gray-700 {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .header-overlay .bg-gray-700:hover {
+            background: #cbd5e1;
+        }
+
+        .header-overlay .text-red-300 {
+            color: #dc2626;
+        }
+
+        .header-overlay .text-red-300:hover {
+            color: #b91c1c;
+        }
+
+        .header-overlay .border-white {
+            border-color: rgba(148, 163, 184, 0.35);
+        }
+
+        .db-status {
+            background: rgba(236, 253, 245, 0.96);
+            color: #166534;
+            border: 1px solid rgba(34, 197, 94, 0.22);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .db-status span {
+            background: #16a34a;
+        }
+
+        .architectures-title,
+        .hero-title,
+        .hero-panel h2,
+        .hero-stat strong,
+        .network-label span,
+        .regional-card strong,
+        .db-label {
+            color: #0f172a;
+            text-shadow: none;
+        }
+
+        .hero-eyebrow,
+        .hero-panel__eyebrow {
+            background: rgba(186, 230, 253, 0.55);
+            border-color: rgba(125, 211, 252, 0.55);
+            color: #0369a1;
+        }
+
+        .hero-lead {
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+
+        .hero-panel__note,
+        .hero-stat span,
+        .network-label small,
+        .regional-card small,
+        .layer-label,
+        .network-connector {
+            color: #64748b;
+        }
+
+        .hero-button--primary {
+            background: linear-gradient(135deg, #e0f2fe 0%, #ecfeff 100%);
+            color: #0f172a;
+            box-shadow: 0 16px 32px rgba(14, 165, 233, 0.12);
+        }
+
+        .hero-button--secondary {
+            background: rgba(255, 255, 255, 0.84);
+            border: 1px solid rgba(148, 163, 184, 0.32);
+            color: #0f172a;
+        }
+
+        .hero-stat,
+        .regional-card,
+        .hero-panel {
+            background: rgba(255, 255, 255, 0.88);
+            border-color: rgba(226, 232, 240, 0.9);
+        }
+
+        .hero-stat {
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        }
+
+        .hero-panel {
+            box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
+        }
+
+        .hero-panel__badge {
+            background: #ecfeff;
+            border-color: rgba(45, 212, 191, 0.35);
+            color: #0f766e;
+        }
+
+        .network-node {
+            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 10px 30px rgba(14, 165, 233, 0.18);
+        }
+
+        .network-node--central {
+            background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 10px 30px rgba(37, 99, 235, 0.18);
+        }
+
+        .network-node i {
+            color: white;
+        }
+
+        .regional-card i {
+            color: #0f766e;
+        }
+
+        .network-connector::before,
+        .network-connector::after {
+            background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.65), transparent);
+        }
+
+        .network-connector i {
+            color: #0ea5e9;
+        }
+
+        .db-node {
+            background: linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%);
+            border-color: #93c5fd;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.15);
+        }
+
+        .db-node.website {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-color: #93c5fd;
+        }
+
+        .db-node.central {
+            box-shadow: 0 0 10px rgba(20, 184, 166, 0.18);
+        }
+
+        .db-node i {
+            color: #0f766e;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <main>
+
+<!-- Hero Section -->
+<section class="hero-section relative text-white">
+    <!-- Database Live Status -->
+    <div class="db-status">
+        <span></span>
+        Database is Live
+    </div>
+
+    <!-- Header Overlay -->
+    <header class="header-overlay w-full">
+        <div class="container mx-auto px-4 py-4 relative">
+            <div class="flex justify-between items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <img src="static/images/logo/distributed-db.svg" alt="Lab2 project logo" class="h-12 w-12 rounded-2xl shadow-md ring-1 ring-white/20 object-contain">
+                    <a href="index.html" class="text-2xl font-bold hover:text-gray-100 transition">Lab2 Project</a>
+                </div>
+
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="index.html" class="hover:text-gray-200 transition">Home</a>
+                    <a href="trips.html" class="hover:text-gray-200 transition">Trips</a>
+                    <a href="guides.html" class="hover:text-gray-200 transition">Guides</a>
+                    <a href="accommodations.html" class="hover:text-gray-200 transition">Hotels</a>
+                    <a href="events.html" class="hover:text-gray-200 transition">Events</a>
+                    <a href="admin-login.html" class="bg-gray-700 text-white px-3 py-2 rounded text-sm hover:bg-gray-600 transition">
+                        <i class="fas fa-lock mr-1"></i>Admin
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button type="button" class="md:hidden text-white" onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <div id="mobile-menu" class="mobile-menu hidden md:hidden absolute left-4 right-4 top-full mt-3 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur text-slate-800" style="max-height: calc(100vh - 5rem); overflow-y: auto;">
+                <div class="flex flex-col gap-2">
+                    <a href="index.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Home</a>
+                    <a href="trips.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Trips</a>
+                    <a href="guides.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Guides</a>
+                    <a href="accommodations.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Hotels</a>
+                    <a href="events.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Events</a>
+                    <div class="border-t border-slate-200 pt-2 mt-2">
+                        <a href="admin-login.html" class="flex items-center justify-between rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-200">
+                            <span><i class="fas fa-lock mr-2"></i>Admin</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero-shell">
+        <div class="container mx-auto px-4 w-full">
+            <div class="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+                <div class="relative z-10">
+                    <div class="hero-eyebrow">Cultural Trip Database</div>
+                    <h1 class="hero-title">Map every journey with one connected database.</h1>
+                    <p class="hero-lead">
+                        The vintage map background sets the travel mood while Oracle XE keeps trips,
+                        guides, hotels, and events synchronized across North, South, and East.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="trips.html" class="hero-button hero-button--primary">
+                            Browse Trips <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="guides.html" class="hero-button hero-button--secondary">
+                            Meet Guides <i class="fas fa-map-pin"></i>
+                        </a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <strong>3 Regions</strong>
+                            <span>North, South, East</span>
+                        </div>
+                        <div class="hero-stat">
+                            <strong>Live Sync</strong>
+                            <span>DB links active</span>
+                        </div>
+                        <div class="hero-stat">
+                            <strong>Oracle XE</strong>
+                            <span>Central node hub</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10">
+                    <div class="hero-panel">
+                        <div class="hero-panel__header">
+                            <div>
+                                <p class="hero-panel__eyebrow">Network View</p>
+                                <h2 class="text-2xl font-semibold text-white">Distributed Architecture</h2>
+                            </div>
+                            <div class="hero-panel__badge">Oracle XE</div>
+                        </div>
+
+                        <div class="network-diagram">
+                            <div class="network-step">
+                                <div class="network-node network-node--website">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div class="network-label">
+                                    <span>Website</span>
+                                    <small>Entry layer</small>
+                                </div>
+                            </div>
+
+                            <div class="network-connector">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>Secure sync</span>
+                            </div>
+
+                            <div class="network-step">
+                                <div class="network-node network-node--central">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="network-label">
+                                    <span>Central Node</span>
+                                    <small>Oracle XE hub</small>
+                                </div>
+                            </div>
+
+                            <div class="network-connector">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>DB links</span>
+                            </div>
+
+                            <div class="network-regional-grid">
+                                <div class="regional-card">
+                                    <i class="fas fa-mountain"></i>
+                                    <strong>North</strong>
+                                    <small>Regional data</small>
+                                </div>
+                                <div class="regional-card">
+                                    <i class="fas fa-sun"></i>
+                                    <strong>South</strong>
+                                    <small>Regional data</small>
+                                </div>
+                                <div class="regional-card">
+                                    <i class="fas fa-leaf"></i>
+                                    <strong>East</strong>
+                                    <small>Regional data</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="hero-panel__note">
+                            One system keeps every destination, booking, and local detail in sync.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Project Note -->
+<section class="py-16 bg-gradient-to-br from-slate-50 via-teal-50 to-cyan-50">
+    <div class="container mx-auto px-4">
+        <div class="mx-auto max-w-5xl rounded-3xl border border-teal-100 bg-white/80 p-8 shadow-lg backdrop-blur">
+            <div class="mb-8 text-center">
+                <span class="inline-flex items-center rounded-full bg-teal-100 px-4 py-2 text-sm font-semibold text-teal-800">
+                    Lab 2 Project
+                </span>
+                <h2 class="mt-4 text-3xl font-bold text-slate-900 md:text-4xl">Built with DigitalOcean and Docker</h2>
+                <p class="mt-3 text-lg text-slate-600">
+                    This home page is part of my Lab 2 project, deployed on DigitalOcean droplets and containerized with Docker.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div class="rounded-2xl border border-teal-100 bg-teal-50/80 p-6">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-teal-600 text-white">
+                        <i class="fas fa-cloud text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900">DigitalOcean Droplets</h3>
+                    <p class="mt-2 text-slate-600">The app runs on cloud droplets for a simple and reliable setup.</p>
+                </div>
+                <div class="rounded-2xl border border-cyan-100 bg-cyan-50/80 p-6">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-600 text-white">
+                        <i class="fas fa-cube text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900">Docker</h3>
+                    <p class="mt-2 text-slate-600">Services are packaged in containers to keep the project easy to run.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-slate-50/80 p-6">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-slate-700 text-white">
+                        <i class="fas fa-flask text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900">Lab 2</h3>
+                    <p class="mt-2 text-slate-600">This page documents the deployment work completed for the lab assignment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Regions Section -->
+<section class="bg-white py-16">
+    <div class="container mx-auto px-4">
+        <div class="mb-10 text-center">
+            <h2 class="text-3xl font-bold text-slate-900 md:text-4xl">Explore by Region</h2>
+            <p class="mt-3 text-slate-600">A quick look at the main areas in the project.</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div class="rounded-2xl border border-blue-100 bg-blue-50/70 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white">
+                    <i class="fas fa-compass text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-900">North</h3>
+                <p class="mt-2 text-slate-600">Mountains, history, and scenic stops.</p>
+                <a href="trips.html?region=North" class="mt-4 inline-flex items-center font-semibold text-blue-700 transition hover:text-blue-900">
+                    View trips <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+
+            <div class="rounded-2xl border border-orange-100 bg-orange-50/70 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-orange-500 text-white">
+                    <i class="fas fa-sun text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-900">South</h3>
+                <p class="mt-2 text-slate-600">Desert views and oasis culture.</p>
+                <a href="trips.html?region=South" class="mt-4 inline-flex items-center font-semibold text-orange-700 transition hover:text-orange-900">
+                    View trips <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+
+            <div class="rounded-2xl border border-green-100 bg-green-50/70 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-600 text-white">
+                    <i class="fas fa-leaf text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-900">East</h3>
+                <p class="mt-2 text-slate-600">Coastal spots, food, and local charm.</p>
+                <a href="trips.html?region=East" class="mt-4 inline-flex items-center font-semibold text-green-700 transition hover:text-green-900">
+                    View trips <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 border-t border-slate-200 text-slate-700">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-slate-900 font-bold mb-4 text-lg">About Us</h3>
+                    <p class="text-base text-slate-600">Explore beautiful cultural destinations across North, South, and East regions.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-slate-900 font-bold mb-4 text-lg">Quick Links</h3>
+                    <ul class="text-base space-y-3 text-slate-600">
+                        <li><a href="index.html" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">Home</a></li>
+                        <li><a href="trips.html" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">Trips</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-slate-900 font-bold mb-4 text-lg">Regions</h3>
+                    <ul class="text-base space-y-3 text-slate-600">
+                        <li><a href="trips.html?region=North" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">North</a></li>
+                        <li><a href="trips.html?region=South" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">South</a></li>
+                        <li><a href="trips.html?region=East" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">East</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-slate-900 font-bold mb-4 text-lg">Architecture</h3>
+                    <p class="text-base text-slate-600"><i class="fas fa-cube mr-2 text-teal-500"></i><strong>Lab2 Project</strong></p>
+                    <p class="text-sm text-slate-600 mt-3">Distributed Database System with Central Droplet connected to 3 Regional Databases (North, South, East)</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-200 mt-10 pt-10 text-center">
+                <p class="text-lg font-semibold text-slate-800">&copy; 2026 Cultural Trip Database Lab2 Project. All rights reserved.</p>
+                <p class="text-base text-slate-600 mt-3">
+                    <i class="fas fa-code-branch mr-2"></i>Distributed Database Architecture: Central Droplet -> 3 Regional Databases (North, South, East) powered by Oracle XE 21c
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu') || document.querySelector('.mobile-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+    </script>
+    
+    <!-- Custom JavaScript -->
+    <script src="static/js/app.js"></script>
+</body>
+</html>

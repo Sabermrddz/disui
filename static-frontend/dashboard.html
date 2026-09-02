@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cultural Trip Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(180deg, #f8fbff 0%, #ffffff 55%, #f8fbff 100%); color: #1f2937; }
+        footer { position: relative; background: linear-gradient(180deg, rgba(248,251,255,0.72) 0%, rgba(238,242,247,0.60) 100%), url('static/images/others/1.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: #475569; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: transparent; z-index: 1; }
+        footer > * { position: relative; z-index: 2; }
+        @media (max-width: 768px) { footer { background-attachment: scroll; } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+<main>
+
+<!-- Navbar -->
+<header class="fixed w-full top-0 z-50 shadow-lg border-b border-slate-200/70 text-slate-800" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(16px);">
+    <div class="container mx-auto px-4 py-4 relative">
+        <div class="flex justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="static/images/logo/distributed-db.svg" alt="Lab2 project logo" class="h-12 w-12 rounded-2xl shadow-md ring-1 ring-white/20 object-contain">
+                <a href="index.html" class="text-2xl font-bold text-slate-900 hover:text-teal-700 transition">Lab2 Project</a>
+            </div>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-teal-700 transition">Home</a>
+                <a href="trips.html" class="hover:text-teal-700 transition">Trips</a>
+                <a href="guides.html" class="hover:text-teal-700 transition">Guides</a>
+                <a href="accommodations.html" class="hover:text-teal-700 transition">Hotels</a>
+                <a href="events.html" class="hover:text-teal-700 transition">Events</a>
+                <a href="admin-login.html" class="bg-slate-100 text-slate-700 px-3 py-2 rounded text-sm hover:bg-slate-200 transition"><i class="fas fa-lock mr-1"></i>Admin</a>
+            </div>
+            <button type="button" class="md:hidden text-slate-700" onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false"><i class="fas fa-bars text-2xl"></i></button>
+        </div>
+        <div id="mobile-menu" class="mobile-menu hidden md:hidden absolute left-4 right-4 top-full mt-3 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur" style="max-height: calc(100vh - 5rem); overflow-y: auto;">
+            <div class="flex flex-col gap-2">
+                <a href="index.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Home</a>
+                <a href="trips.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Trips</a>
+                <a href="guides.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Guides</a>
+                <a href="accommodations.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Hotels</a>
+                <a href="events.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Events</a>
+                <div class="border-t border-slate-200 pt-2 mt-2">
+                    <a href="admin-login.html" class="flex items-center justify-between rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"><span><i class="fas fa-lock mr-2"></i>Admin</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container mx-auto px-4 py-12 mt-20">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">Admin Dashboard</h1>
+        <p class="text-gray-600">Overview of system statistics and key metrics.</p>
+    </div>
+
+    <!-- Query Info -->
+    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-8">
+        <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+                <h3 class="text-xl font-bold text-gray-900">Dashboard Data Source</h3>
+                <p class="text-sm text-gray-600 mt-1">This dashboard reads live counts from the Oracle-backed database.</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">Sample Fallback</span>
+        </div>
+        <details class="group">
+            <summary class="cursor-pointer text-sm font-semibold text-teal-700 hover:text-teal-900">Show executed query code</summary>
+            <div class="mt-4 space-y-4">
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 1</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT Region, COUNT(*) as count FROM Trips_All GROUP BY Region</pre></div>
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 2</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT Region, COUNT(*) as count FROM Guides_All GROUP BY Region</pre></div>
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 3</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT COUNT(*) FROM Booking_Info</pre></div>
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 4</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT COUNT(*) FROM Tourist_Basic</pre></div>
+            </div>
+        </details>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-semibold mb-2">Total Bookings</p>
+                    <p class="text-4xl font-bold text-blue-600">3</p>
+                </div>
+                <div class="bg-blue-100 rounded-full p-4 text-blue-600 text-2xl"><i class="fas fa-ticket-alt"></i></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-semibold mb-2">Total Tourists</p>
+                    <p class="text-4xl font-bold text-green-600">3</p>
+                </div>
+                <div class="bg-green-100 rounded-full p-4 text-green-600 text-2xl"><i class="fas fa-users"></i></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-semibold mb-2">Active Regions</p>
+                    <p class="text-4xl font-bold text-teal-600">3</p>
+                </div>
+                <div class="bg-teal-100 rounded-full p-4 text-teal-600 text-2xl"><i class="fas fa-globe"></i></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-semibold mb-2">Database Status</p>
+                    <p class="text-lg font-bold text-green-600"><i class="fas fa-check-circle mr-1"></i>Connected</p>
+                </div>
+                <div class="bg-green-100 rounded-full p-4 text-green-600 text-2xl"><i class="fas fa-database"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- Trips by Region -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-6">Trips by Region</h2>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">North</span>
+                        <span class="text-teal-600 font-bold">1 trips</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-teal-600 h-2 rounded-full" style="width: 33%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">South</span>
+                        <span class="text-teal-600 font-bold">1 trips</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-teal-600 h-2 rounded-full" style="width: 33%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">East</span>
+                        <span class="text-teal-600 font-bold">1 trips</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-teal-600 h-2 rounded-full" style="width: 33%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guides by Region -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-6">Guides by Region</h2>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">North</span>
+                        <span class="text-green-600 font-bold">1 guides</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: 33%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">South</span>
+                        <span class="text-green-600 font-bold">1 guides</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: 33%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">East</span>
+                        <span class="text-green-600 font-bold">1 guides</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: 33%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Info -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-6">System Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div><p class="text-gray-600 text-sm font-semibold mb-1">Database Type</p><p class="font-semibold">Oracle XE 21c (Distributed)</p></div>
+            <div><p class="text-gray-600 text-sm font-semibold mb-1">Framework</p><p class="font-semibold">Django 4.2</p></div>
+            <div><p class="text-gray-600 text-sm font-semibold mb-1">Database Nodes</p><p class="font-semibold">4 (1 Central + 3 Regional)</p></div>
+            <div><p class="text-gray-600 text-sm font-semibold mb-1">Fragmentation Strategy</p><p class="font-semibold">Horizontal + Vertical + Mixed</p></div>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<!-- Footer -->
+<footer class="mt-16 border-t border-slate-200 text-slate-700">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">About Us</h3><p class="text-base text-slate-600">Explore beautiful cultural destinations across North, South, and East regions.</p></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Quick Links</h3><ul class="text-base space-y-3 text-slate-600"><li><a href="index.html" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">Home</a></li><li><a href="trips.html" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">Trips</a></li></ul></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Regions</h3><ul class="text-base space-y-3 text-slate-600"><li><a href="trips.html?region=North" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">North</a></li><li><a href="trips.html?region=South" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">South</a></li><li><a href="trips.html?region=East" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">East</a></li></ul></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Architecture</h3><p class="text-base text-slate-600"><i class="fas fa-cube mr-2 text-teal-500"></i><strong>Lab2 Project</strong></p><p class="text-sm text-slate-600 mt-3">Distributed Database System with Central Droplet connected to 3 Regional Databases (North, South, East)</p></div>
+        </div>
+        <div class="border-t border-slate-200 mt-10 pt-10 text-center">
+            <p class="text-lg font-semibold text-slate-800">&copy; 2026 Cultural Trip Database Lab2 Project. All rights reserved.</p>
+            <p class="text-base text-slate-600 mt-3"><i class="fas fa-code-branch mr-2"></i>Distributed Database Architecture: Central Droplet -> 3 Regional Databases (North, South, East) powered by Oracle XE 21c</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu') || document.querySelector('.mobile-menu');
+        if (menu) { menu.classList.toggle('hidden'); }
+    }
+</script>
+<script src="static/js/app.js"></script>
+</body>
+</html>

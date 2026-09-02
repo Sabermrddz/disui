@@ -1,0 +1,223 @@
+/* Custom styles for Cultural Trip Database */
+
+:root {
+    --primary-color: #38bdf8;
+    --secondary-color: #2dd4bf;
+    --success-color: #34d399;
+    --warning-color: #fbbf24;
+    --danger-color: #f87171;
+    --light-bg: #f8fbff;
+    --dark-text: #1f2937;
+}
+
+body {
+    color: var(--dark-text);
+    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 55%, #f8fbff 100%);
+}
+
+img,
+video,
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%);
+}
+
+.table-scroll,
+.table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Navigation */
+nav {
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+nav a:hover {
+    text-shadow: none;
+}
+
+/* Cards */
+.trip-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.trip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #38bdf8 0%, #14b8a6 100%);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0f766e 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(14, 165, 233, 0.2);
+}
+
+/* Forms */
+.form-control {
+    border: 1px solid #cbd5e0;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+}
+
+/* Typography */
+h1, h2, h3 {
+    color: var(--dark-text);
+    font-weight: 700;
+}
+
+a {
+    color: #0f766e;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0f172a;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.badge-primary {
+    background: #e0f2fe;
+    color: #075985;
+}
+
+.badge-success {
+    background: #ecfdf5;
+    color: #166534;
+}
+
+.badge-warning {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(180deg, #f8fbff 0%, #e2e8f0 100%);
+    color: #475569;
+    margin-top: 4rem;
+    border-top: 1px solid #dbe4ee;
+}
+
+footer a {
+    color: #0f766e;
+}
+
+footer a:hover {
+    color: #0f172a;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .trip-card {
+        border-radius: 0.5rem;
+    }
+    
+    nav {
+        padding: 1rem 0;
+    }
+
+    footer {
+        background-attachment: scroll;
+    }
+}
+
+@media (max-width: 1024px) {
+    .admin-container,
+    .admin-list-container,
+    .admin-shell {
+        grid-template-columns: 1fr !important;
+    }
+
+    .admin-sidebar,
+    .sidebar {
+        position: static !important;
+        top: auto !important;
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-content,
+    .admin-list-content,
+    .content {
+        padding: 20px !important;
+    }
+
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .login-container {
+        padding: 1.25rem;
+    }
+
+    .login-box,
+    .form-box {
+        padding: 24px;
+    }
+}
+
+/* Print styles */
+@media print {
+    nav, footer {
+        display: none;
+    }
+    
+    .trip-card {
+        page-break-inside: avoid;
+        border: 1px solid #e2e8f0;
+    }
+}

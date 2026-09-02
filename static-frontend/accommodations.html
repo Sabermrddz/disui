@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accommodations - Cultural Trip Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(180deg, #f8fbff 0%, #ffffff 55%, #f8fbff 100%); color: #1f2937; }
+        footer { position: relative; background: linear-gradient(180deg, rgba(248,251,255,0.72) 0%, rgba(238,242,247,0.60) 100%), url('static/images/others/1.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: #475569; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: transparent; z-index: 1; }
+        footer > * { position: relative; z-index: 2; }
+        @media (max-width: 768px) { footer { background-attachment: scroll; } }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .accommodation-card { animation: fadeInUp 0.6s ease-out; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.4,0,0.2,1); overflow: hidden; display: flex; flex-direction: column; height: 100%; }
+        .accommodation-card:nth-child(1) { animation-delay: 0.1s; }
+        .accommodation-card:nth-child(2) { animation-delay: 0.2s; }
+        .accommodation-card:nth-child(3) { animation-delay: 0.3s; }
+        .accommodation-card:hover { box-shadow: 0 16px 35px rgba(59,130,246,0.15); transform: translateY(-8px); }
+        .accommodation-header { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+        .accommodation-header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 1; }
+        .accommodation-header i { font-size: 3.5rem; color: white; z-index: 2; transition: transform 0.3s ease; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .accommodation-card:hover .accommodation-header i { transform: scale(1.1) rotateY(5deg); }
+        .accommodation-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .accommodation-title { font-size: 1.25rem; font-weight: 700; color: #111827; margin-bottom: 1rem; transition: color 0.3s ease; }
+        .accommodation-card:hover .accommodation-title { color: #3b82f6; }
+        .accommodation-header-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid rgba(59,130,246,0.1); flex-wrap: wrap; gap: 0.5rem; }
+        .region-badge { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af; padding: 0.6rem 1.2rem; border-radius: 20px; font-size: 0.875rem; font-weight: 600; transition: all 0.3s ease; border: 1px solid #93c5fd; white-space: nowrap; }
+        .region-badge:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59,130,246,0.2); }
+        .rating-stars { display: flex; gap: 0.25rem; transition: transform 0.3s ease; }
+        .accommodation-card:hover .rating-stars { transform: scale(1.1); }
+        .star-filled { color: #fbbf24; }
+        .star-empty { color: #d1d5db; }
+        .hotel-details { font-size: 0.875rem; color: #4b5563; flex-grow: 1; margin-bottom: 1rem; }
+        .detail-item { display: flex; align-items: center; padding: 0.75rem 0; transition: all 0.2s ease; line-height: 1.6; }
+        .detail-item:hover { color: #3b82f6; transform: translateX(4px); }
+        .detail-item i { margin-right: 0.75rem; min-width: 20px; color: #3b82f6; transition: transform 0.2s ease; }
+        .detail-item:hover i { transform: scale(1.2); }
+        .hotel-id-badge { background: linear-gradient(135deg, #3b82f6, #1e40af); color: white; font-weight: bold; font-size: 0.875rem; padding: 0.6rem 1.2rem; border-radius: 6px; display: inline-block; transition: all 0.3s ease; white-space: nowrap; }
+        .hotel-id-badge:hover { transform: scale(1.05); box-shadow: 0 6px 12px rgba(59,130,246,0.3); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+<main>
+
+<!-- Navbar -->
+<header class="fixed w-full top-0 z-50 shadow-lg border-b border-slate-200/70 text-slate-800" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(16px);">
+    <div class="container mx-auto px-4 py-4 relative">
+        <div class="flex justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="static/images/logo/distributed-db.svg" alt="Lab2 project logo" class="h-12 w-12 rounded-2xl shadow-md ring-1 ring-white/20 object-contain">
+                <a href="index.html" class="text-2xl font-bold text-slate-900 hover:text-teal-700 transition">Lab2 Project</a>
+            </div>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-teal-700 transition">Home</a>
+                <a href="trips.html" class="hover:text-teal-700 transition">Trips</a>
+                <a href="guides.html" class="hover:text-teal-700 transition">Guides</a>
+                <a href="accommodations.html" class="hover:text-teal-700 transition">Hotels</a>
+                <a href="events.html" class="hover:text-teal-700 transition">Events</a>
+                <a href="admin-login.html" class="bg-slate-100 text-slate-700 px-3 py-2 rounded text-sm hover:bg-slate-200 transition"><i class="fas fa-lock mr-1"></i>Admin</a>
+            </div>
+            <button type="button" class="md:hidden text-slate-700" onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false"><i class="fas fa-bars text-2xl"></i></button>
+        </div>
+        <div id="mobile-menu" class="mobile-menu hidden md:hidden absolute left-4 right-4 top-full mt-3 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur" style="max-height: calc(100vh - 5rem); overflow-y: auto;">
+            <div class="flex flex-col gap-2">
+                <a href="index.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Home</a>
+                <a href="trips.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Trips</a>
+                <a href="guides.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Guides</a>
+                <a href="accommodations.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Hotels</a>
+                <a href="events.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Events</a>
+                <div class="border-t border-slate-200 pt-2 mt-2">
+                    <a href="admin-login.html" class="flex items-center justify-between rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"><span><i class="fas fa-lock mr-2"></i>Admin</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container mx-auto px-4 py-12 mt-20">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">Accommodations</h1>
+        <p class="text-gray-600">Browse our carefully selected hotels and lodges in each region.</p>
+    </div>
+
+    <!-- Query Info -->
+    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-8">
+        <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+                <h3 class="text-xl font-bold text-gray-900">Accommodations Data Source</h3>
+                <p class="text-sm text-gray-600 mt-1">Accommodations are read from the live Oracle view All_Accommodations.</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">Sample Fallback</span>
+        </div>
+        <details class="group">
+            <summary class="cursor-pointer text-sm font-semibold text-teal-700 hover:text-teal-900">Show executed query code</summary>
+            <div class="mt-4 space-y-4">
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 1</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT * FROM All_Accommodations ORDER BY Region, RATING DESC</pre></div>
+            </div>
+        </details>
+    </div>
+
+    <!-- Filter -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <form class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <label class="block text-sm font-semibold mb-2">Filter by Region</label>
+                <select name="region" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600">
+                    <option value="">All Regions</option>
+                    <option value="North">North</option>
+                    <option value="South">South</option>
+                    <option value="East">East</option>
+                </select>
+            </div>
+            <div class="flex gap-2 items-end">
+                <button type="submit" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition"><i class="fas fa-filter mr-2"></i>Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Accommodations Grid — 3 sample hotels -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="accommodations-container">
+
+        <!-- Hotel 501 — North -->
+        <div class="accommodation-card">
+            <div class="accommodation-header" style="background-image: url('static/images/hotels/brett-campbell-k1OlQaEK2qI-unsplash.jpg');">
+                <i class="fas fa-hotel" aria-label="Hotel"></i>
+            </div>
+            <div class="accommodation-content">
+                <div class="accommodation-header-info">
+                    <span class="region-badge"><i class="fas fa-map-marker-alt mr-1"></i>North</span>
+                    <span class="rating-stars">
+                        <i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i>
+                    </span>
+                </div>
+                <h3 class="accommodation-title">El Aurassi Hotel</h3>
+                <div class="hotel-details">
+                    <div class="detail-item"><i class="fas fa-building"></i><span><strong>Hotel ID:</strong> 501</span></div>
+                    <div class="detail-item"><i class="fas fa-star"></i><span><strong>Rating:</strong> 5.0/5.0</span></div>
+                </div>
+                <div class="mt-auto pt-2 border-t border-gray-100">
+                    <span class="hotel-id-badge"><i class="fas fa-hashtag"></i> 501</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hotel 502 — South -->
+        <div class="accommodation-card">
+            <div class="accommodation-header" style="background-image: url('static/images/hotels/the-anam-_twiIcIsp2s-unsplash.jpg');">
+                <i class="fas fa-hotel" aria-label="Hotel"></i>
+            </div>
+            <div class="accommodation-content">
+                <div class="accommodation-header-info">
+                    <span class="region-badge"><i class="fas fa-map-marker-alt mr-1"></i>South</span>
+                    <span class="rating-stars">
+                        <i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="far fa-star star-empty"></i>
+                    </span>
+                </div>
+                <h3 class="accommodation-title">Hotel Tahat</h3>
+                <div class="hotel-details">
+                    <div class="detail-item"><i class="fas fa-building"></i><span><strong>Hotel ID:</strong> 502</span></div>
+                    <div class="detail-item"><i class="fas fa-star"></i><span><strong>Rating:</strong> 4.0/5.0</span></div>
+                </div>
+                <div class="mt-auto pt-2 border-t border-gray-100">
+                    <span class="hotel-id-badge"><i class="fas fa-hashtag"></i> 502</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hotel 503 — East -->
+        <div class="accommodation-card">
+            <div class="accommodation-header" style="background-image: url('static/images/hotels/sara-dubler-Koei_7yYtIo-unsplash.jpg');">
+                <i class="fas fa-hotel" aria-label="Hotel"></i>
+            </div>
+            <div class="accommodation-content">
+                <div class="accommodation-header-info">
+                    <span class="region-badge"><i class="fas fa-map-marker-alt mr-1"></i>East</span>
+                    <span class="rating-stars">
+                        <i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="fas fa-star star-filled"></i><i class="far fa-star star-empty"></i>
+                    </span>
+                </div>
+                <h3 class="accommodation-title">Hotel Chiak</h3>
+                <div class="hotel-details">
+                    <div class="detail-item"><i class="fas fa-building"></i><span><strong>Hotel ID:</strong> 503</span></div>
+                    <div class="detail-item"><i class="fas fa-star"></i><span><strong>Rating:</strong> 4.0/5.0</span></div>
+                </div>
+                <div class="mt-auto pt-2 border-t border-gray-100">
+                    <span class="hotel-id-badge"><i class="fas fa-hashtag"></i> 503</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</main>
+
+<!-- Footer -->
+<footer class="mt-16 border-t border-slate-200 text-slate-700">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">About Us</h3><p class="text-base text-slate-600">Explore beautiful cultural destinations across North, South, and East regions.</p></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Quick Links</h3><ul class="text-base space-y-3 text-slate-600"><li><a href="index.html" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">Home</a></li><li><a href="trips.html" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">Trips</a></li></ul></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Regions</h3><ul class="text-base space-y-3 text-slate-600"><li><a href="trips.html?region=North" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">North</a></li><li><a href="trips.html?region=South" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">South</a></li><li><a href="trips.html?region=East" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">East</a></li></ul></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Architecture</h3><p class="text-base text-slate-600"><i class="fas fa-cube mr-2 text-teal-500"></i><strong>Lab2 Project</strong></p><p class="text-sm text-slate-600 mt-3">Distributed Database System with Central Droplet connected to 3 Regional Databases (North, South, East)</p></div>
+        </div>
+        <div class="border-t border-slate-200 mt-10 pt-10 text-center">
+            <p class="text-lg font-semibold text-slate-800">&copy; 2026 Cultural Trip Database Lab2 Project. All rights reserved.</p>
+            <p class="text-base text-slate-600 mt-3"><i class="fas fa-code-branch mr-2"></i>Distributed Database Architecture: Central Droplet -> 3 Regional Databases (North, South, East) powered by Oracle XE 21c</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu') || document.querySelector('.mobile-menu');
+        if (menu) { menu.classList.toggle('hidden'); }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.accommodation-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() { this.style.transform = 'translateY(-8px) scale(1.01)'; });
+            card.addEventListener('mouseleave', function() { this.style.transform = 'translateY(0) scale(1)'; });
+        });
+    });
+</script>
+<script src="static/js/app.js"></script>
+</body>
+</html>

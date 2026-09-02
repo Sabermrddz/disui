@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Details - Cultural Trip Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(180deg, #f8fbff 0%, #ffffff 55%, #f8fbff 100%); color: #1f2937; }
+        footer { position: relative; background: linear-gradient(180deg, rgba(248,251,255,0.72) 0%, rgba(238,242,247,0.60) 100%), url('static/images/others/1.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: #475569; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: transparent; z-index: 1; }
+        footer > * { position: relative; z-index: 2; }
+        @media (max-width: 768px) { footer { background-attachment: scroll; } }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .detail-card { animation: fadeInUp 0.6s ease-out; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.4,0,0.2,1); overflow: hidden; }
+        .detail-card:hover { box-shadow: 0 16px 35px rgba(15,118,110,0.15); transform: translateY(-8px); }
+        .schedule-card { padding: 2rem; }
+        .schedule-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; color: #111827; display: flex; align-items: center; gap: 0.75rem; }
+        .schedule-card i { color: #d97706; font-size: 1.75rem; }
+        .date-section { padding: 1.5rem; background: linear-gradient(135deg, #e0f2f1, #b2dfdb); border-radius: 10px; margin-bottom: 1rem; transition: all 0.3s ease; }
+        .date-section:hover { transform: translateX(4px); background: linear-gradient(135deg, #b2dfdb, #80cbc4); }
+        .date-label { font-size: 0.75rem; font-weight: 700; color: #0f766e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+        .date-value { font-size: 1.875rem; font-weight: 700; color: #d97706; margin-bottom: 0.25rem; }
+        .date-year { font-size: 0.875rem; color: #0f766e; font-weight: 500; }
+        .accommodation-card { padding: 0; overflow: hidden; }
+        .accommodation-header { background: linear-gradient(135deg, #3b82f6, #1e40af); background-size: cover; background-position: center; height: 140px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .accommodation-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(30,64,175,0.5); z-index: 1; }
+        .accommodation-header i { font-size: 3rem; color: white; transition: transform 0.3s ease; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2)); position: relative; z-index: 2; }
+        .accommodation-card:hover .accommodation-header i { transform: scale(1.1); }
+        .accommodation-content { padding: 1.5rem; }
+        .accommodation-name { font-size: 1.25rem; font-weight: 700; color: #111827; margin-bottom: 0.75rem; transition: color 0.3s ease; }
+        .accommodation-card:hover .accommodation-name { color: #3b82f6; }
+        .accommodation-rating { display: flex; gap: 0.25rem; margin-bottom: 1rem; }
+        .star { color: #fbbf24; }
+        .rating-text { font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-top: 0.5rem; }
+        .guide-card { padding: 1.5rem; }
+        .guide-header { display: flex; align-items: center; margin-bottom: 1.5rem; }
+        .guide-avatar { width: 60px; height: 60px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.75rem; transition: transform 0.3s ease; box-shadow: 0 4px 12px rgba(34,197,94,0.2); }
+        .guide-card:hover .guide-avatar { transform: scale(1.1); }
+        .guide-info { margin-left: 1rem; flex-grow: 1; }
+        .guide-name { font-size: 1.125rem; font-weight: 700; color: #111827; margin-bottom: 0.25rem; }
+        .guide-id { font-size: 0.875rem; color: #6b7280; }
+        .guide-languages { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 1rem; border-radius: 6px; transition: all 0.2s ease; }
+        .guide-card:hover .guide-languages { background: #dcfce7; transform: translateX(4px); }
+        .guide-languages i { color: #22c55e; margin-right: 0.75rem; }
+        .guide-languages-text { font-weight: 600; color: #16a34a; font-size: 0.95rem; }
+        .event-card { padding: 1.5rem; display: flex; gap: 1.5rem; align-items: flex-start; }
+        .event-icon-box { background: linear-gradient(135deg, #fef3c7, #fed7aa); padding: 1rem; border-radius: 10px; display: flex; align-items: center; justify-content: center; min-width: 60px; height: 60px; transition: all 0.3s ease; }
+        .event-card:hover .event-icon-box { background: linear-gradient(135deg, #fed7aa, #fdba74); transform: scale(1.1); }
+        .event-icon-box i { font-size: 1.75rem; color: #d97706; }
+        .event-content { flex-grow: 1; }
+        .event-title { font-size: 1.125rem; font-weight: 700; color: #111827; margin-bottom: 0.75rem; transition: color 0.3s ease; }
+        .event-card:hover .event-title { color: #d97706; }
+        .event-type { display: inline-block; background: linear-gradient(135deg, #fef3c7, #fed7aa); color: #d97706; padding: 0.4rem 0.8rem; border-radius: 16px; font-size: 0.75rem; font-weight: 600; transition: all 0.2s ease; }
+        .event-card:hover .event-type { background: linear-gradient(135deg, #fed7aa, #fdba74); transform: translateY(-2px); }
+        .event-date { font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem; }
+        .section-title { font-size: 2rem; font-weight: 700; color: #111827; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
+        .section-title i { font-size: 2rem; background: linear-gradient(135deg, #d97706, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+<main>
+
+<!-- Navbar -->
+<header class="fixed w-full top-0 z-50 shadow-lg border-b border-slate-200/70 text-slate-800" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(16px);">
+    <div class="container mx-auto px-4 py-4 relative">
+        <div class="flex justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="static/images/logo/distributed-db.svg" alt="Lab2 project logo" class="h-12 w-12 rounded-2xl shadow-md ring-1 ring-white/20 object-contain">
+                <a href="index.html" class="text-2xl font-bold text-slate-900 hover:text-teal-700 transition">Lab2 Project</a>
+            </div>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-teal-700 transition">Home</a>
+                <a href="trips.html" class="hover:text-teal-700 transition">Trips</a>
+                <a href="guides.html" class="hover:text-teal-700 transition">Guides</a>
+                <a href="accommodations.html" class="hover:text-teal-700 transition">Hotels</a>
+                <a href="events.html" class="hover:text-teal-700 transition">Events</a>
+                <a href="admin-login.html" class="bg-slate-100 text-slate-700 px-3 py-2 rounded text-sm hover:bg-slate-200 transition"><i class="fas fa-lock mr-1"></i>Admin</a>
+            </div>
+            <button type="button" class="md:hidden text-slate-700" onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false"><i class="fas fa-bars text-2xl"></i></button>
+        </div>
+        <div id="mobile-menu" class="mobile-menu hidden md:hidden absolute left-4 right-4 top-full mt-3 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur" style="max-height: calc(100vh - 5rem); overflow-y: auto;">
+            <div class="flex flex-col gap-2">
+                <a href="index.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Home</a>
+                <a href="trips.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Trips</a>
+                <a href="guides.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Guides</a>
+                <a href="accommodations.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Hotels</a>
+                <a href="events.html" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Events</a>
+                <div class="border-t border-slate-200 pt-2 mt-2">
+                    <a href="admin-login.html" class="flex items-center justify-between rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"><span><i class="fas fa-lock mr-2"></i>Admin</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container mx-auto px-4 py-12 mt-20">
+    <!-- Breadcrumb -->
+    <nav class="mb-8">
+        <a href="trips.html" class="text-teal-600 hover:text-teal-800 font-semibold transition">
+            <i class="fas fa-chevron-left mr-1"></i>Back to Trips
+        </a>
+    </nav>
+
+    <!-- Trip Header -->
+    <div class="bg-gradient-to-r from-teal-600 to-amber-600 text-white rounded-lg shadow-lg p-8 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <p class="text-teal-200 text-sm font-semibold mb-2">TRIP ID</p>
+                <h1 class="text-4xl font-bold">101</h1>
+            </div>
+            <div>
+                <p class="text-teal-200 text-sm font-semibold mb-2">REGION</p>
+                <p class="text-3xl font-bold">North</p>
+            </div>
+            <div>
+                <p class="text-teal-200 text-sm font-semibold mb-2">DURATION</p>
+                <p class="text-3xl font-bold">10 days</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Query Info -->
+    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-8">
+        <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+                <h3 class="text-xl font-bold text-gray-900">Trip Detail Data Source</h3>
+                <p class="text-sm text-gray-600 mt-1">This page reads from the live Oracle views All_Trips, All_Accommodations, All_Events, and All_Guides.</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">Sample Fallback</span>
+        </div>
+        <details class="group">
+            <summary class="cursor-pointer text-sm font-semibold text-teal-700 hover:text-teal-900">Show executed query code</summary>
+            <div class="mt-4 space-y-4">
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 1</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT * FROM All_Trips WHERE TripID = :trip_id</pre></div>
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 2</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT * FROM All_Accommodations WHERE Region = :region</pre></div>
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 3</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT * FROM All_Events WHERE Region = :region</pre></div>
+                <div><div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query 4</div><pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">SELECT * FROM All_Guides WHERE Region = :region</pre></div>
+            </div>
+        </details>
+    </div>
+
+    <!-- Trip Schedule -->
+    <div class="mb-12">
+        <h2 class="section-title"><i class="fas fa-calendar-days"></i>Trip Schedule</h2>
+        <div class="detail-card schedule-card">
+            <h3><i class="fas fa-clock"></i>Travel Dates</h3>
+            <div class="space-y-2">
+                <div class="date-section">
+                    <div class="date-label"><i class="fas fa-play-circle mr-1"></i>Start Date</div>
+                    <div class="date-value">Jun 01</div>
+                    <div class="date-year">June 2025</div>
+                </div>
+                <div class="date-section">
+                    <div class="date-label"><i class="fas fa-stop-circle mr-1"></i>End Date</div>
+                    <div class="date-value">Jun 10</div>
+                    <div class="date-year">June 2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accommodations -->
+    <div class="mb-12">
+        <h2 class="section-title"><i class="fas fa-bed"></i>Where You'll Stay</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="detail-card accommodation-card">
+                <div class="accommodation-header" style="background-image: url('static/images/hotels/brett-campbell-k1OlQaEK2qI-unsplash.jpg');">
+                    <i class="fas fa-hotel"></i>
+                </div>
+                <div class="accommodation-content">
+                    <h3 class="accommodation-name">El Aurassi Hotel</h3>
+                    <div class="accommodation-rating">
+                        <i class="fas fa-star star"></i><i class="fas fa-star star"></i><i class="fas fa-star star"></i><i class="fas fa-star star"></i><i class="fas fa-star star"></i>
+                    </div>
+                    <div class="rating-text"><strong>Rating:</strong> 5.0/5.0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guides -->
+    <div class="mb-12">
+        <h2 class="section-title"><i class="fas fa-user-tie"></i>Your Guides</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="detail-card guide-card">
+                <div class="guide-header">
+                    <div class="guide-avatar">N</div>
+                    <div class="guide-info">
+                        <div class="guide-name">Nasser Samir</div>
+                        <div class="guide-id">Guide #301</div>
+                    </div>
+                </div>
+                <div class="guide-languages">
+                    <i class="fas fa-globe"></i>
+                    <span class="guide-languages-text">Arabic, French</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events -->
+    <div class="mb-12">
+        <h2 class="section-title"><i class="fas fa-star"></i>Cultural Events</h2>
+        <div class="space-y-4">
+            <div class="detail-card event-card">
+                <div class="event-icon-box"><i class="fas fa-calendar-alt"></i></div>
+                <div class="event-content">
+                    <h3 class="event-title">Timgad Festival</h3>
+                    <span class="event-type">Music</span>
+                    <div class="event-date"><i class="fas fa-clock mr-1"></i>June 05, 2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<!-- Footer -->
+<footer class="mt-16 border-t border-slate-200 text-slate-700">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">About Us</h3><p class="text-base text-slate-600">Explore beautiful cultural destinations across North, South, and East regions.</p></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Quick Links</h3><ul class="text-base space-y-3 text-slate-600"><li><a href="index.html" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">Home</a></li><li><a href="trips.html" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">Trips</a></li></ul></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Regions</h3><ul class="text-base space-y-3 text-slate-600"><li><a href="trips.html?region=North" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">North</a></li><li><a href="trips.html?region=South" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">South</a></li><li><a href="trips.html?region=East" class="inline-flex rounded-lg border border-blue-100 bg-white/90 px-3 py-1.5 font-semibold text-blue-800 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-950">East</a></li></ul></div>
+            <div><h3 class="text-slate-900 font-bold mb-4 text-lg">Architecture</h3><p class="text-base text-slate-600"><i class="fas fa-cube mr-2 text-teal-500"></i><strong>Lab2 Project</strong></p><p class="text-sm text-slate-600 mt-3">Distributed Database System with Central Droplet connected to 3 Regional Databases (North, South, East)</p></div>
+        </div>
+        <div class="border-t border-slate-200 mt-10 pt-10 text-center">
+            <p class="text-lg font-semibold text-slate-800">&copy; 2026 Cultural Trip Database Lab2 Project. All rights reserved.</p>
+            <p class="text-base text-slate-600 mt-3"><i class="fas fa-code-branch mr-2"></i>Distributed Database Architecture: Central Droplet -> 3 Regional Databases (North, South, East) powered by Oracle XE 21c</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu') || document.querySelector('.mobile-menu');
+        if (menu) { menu.classList.toggle('hidden'); }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.detail-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() { this.style.transform = 'translateY(-8px)'; });
+            card.addEventListener('mouseleave', function() { this.style.transform = 'translateY(0)'; });
+        });
+    });
+</script>
+<script src="static/js/app.js"></script>
+</body>
+</html>
